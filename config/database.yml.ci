@@ -1,0 +1,6 @@
+test:
+  adapter: postgresql
+  pool: 5
+  database: quoting_circle_ci
+  username:
+  password:
