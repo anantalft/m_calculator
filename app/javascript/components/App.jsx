@@ -10,11 +10,6 @@ import Login from "./Login";
 
 import { Routes, Route } from 'react-router-dom';
 
-const ROLES = {
-  'Quote': 'Quote',
-  'Admin': 'Admin'
-}
-
 const App = () => {
   return (
   <Routes>
@@ -25,10 +20,8 @@ const App = () => {
       {/*<Route path="login" element={<Login />} />*/}
       <Route path="/" element={<Home />} />
       {/* we want to protect these routes */}
-      <Route element={<RequireAuth allowedRoles={[ROLES.Quote]}/>} >
         <Route path="summary" element={<Summary />} />
         <Route path="report" element={<Report />} />
-      </Route>
       {/* catch all */}
       <Route path="*" element={<Missing />} />
     </Route>
