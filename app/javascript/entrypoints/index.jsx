@@ -6,6 +6,7 @@ import {AuthProvider} from "../context/AuthProvider";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 root.render(
 <React.StrictMode>

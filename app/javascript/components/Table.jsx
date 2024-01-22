@@ -33,13 +33,10 @@ export default function Table({ columns, data }) {
       Render the UI for your table
       - react-table doesn't have UI, it's headless. We just need to put the react-table props from the Hooks, and it will do its magic automatically
     */
+
+    if(!columns.length) return <div>No columns Listed.</div>;
     return (
         <div>
-            <input
-                value={filterInput}
-                onChange={handleFilterChange}
-                placeholder={"Search name"}
-            />
         <table {...getTableProps()}>
             <thead>
             {headerGroups.map(headerGroup => (
@@ -60,8 +57,9 @@ export default function Table({ columns, data }) {
             <tbody {...getTableBodyProps()}>
             {rows.map((row, i) => {
                 prepareRow(row);
+                const rowClassName = row.original.winner ? '' :  'total-row' ;
                 return (
-                    <tr {...row.getRowProps()}>
+                    <tr {...row.getRowProps()} className={rowClassName}>
                         {row.cells.map(cell => {
                             return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
                         })}

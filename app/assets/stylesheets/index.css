@@ -20,3 +20,14 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     padding: 5px;
     background-color: darkolivegreen;
 }
+
+.header {
+    text-align: center;
+}
+
+
+.total-row {
+    /* Add your styles for the total row here */
+    background-color: #ffffe0;
+    font-weight: bold;
+}

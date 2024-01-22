@@ -1,0 +1,45 @@
+[
+  {
+    "attempt": 1,
+    "date": "10/1/2024",
+    "number_of_players": 2,
+    "points": [
+      {
+      "name": "abc",
+      "win": "false",
+      "watched": false,
+      "value": 0,
+      "id": 1
+      },
+      {
+        "name": "cde",
+        "win": "true",
+        "watched": true,
+        "value": 20,
+        "id": 2
+     }
+    ]
+  },
+  {
+    "attempt": 2,
+    "date": "10/1/2024",
+    "number_of_players": 2,
+    "points": [
+      {
+        "name": "abc",
+        "win": "false",
+        "watched": true,
+        "value": 0,
+        "id": 1
+      },
+      {
+        "name": "cde",
+        "win": "true",
+        "watched": true,
+        "value": 20,
+        "id": 2
+      }
+    ]
+  }
+
+]
