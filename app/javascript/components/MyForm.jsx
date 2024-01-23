@@ -38,7 +38,7 @@ function MyForm({players, closePopUp = f =>f}) {
             {formValues.map((element, index) => (
                 <div className="form-inline" key={index}>
                     <label>Name</label>
-                    <input type="text" name="name" value={element.name || ""} required onChange={e => handleChange(index, e)}/>
+                    <input className='input-txt'  type="text" name="name" value={element.name || ""} required onChange={e => handleChange(index, e)}/>
                     {
                         players.length < 1 || element.name == '' ?
                             <button type="button" className="button remove"

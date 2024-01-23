@@ -37,9 +37,9 @@ function PointForm({players, closePopUp = f =>f}) {
         <form onSubmit={handleSubmit}>
             {formValues.map((element, index) => (
                 <div className="form-inline" key={index}>
-                    <div className='right-child'><label>{element.name} </label></div>
+                    <div className='right-child'><b><label>{element.name} </label></b></div>
                 <div className='left-child'>
-                    <input type="number" name="point" required value={  (element.name == 'Total') ? totalPoint : element.point }  onChange={e => handleChange(index, e)}/>
+                    <input className='input-txt' type="number" name="point" required value={  (element.name == 'Total') ? totalPoint : element.point }  onChange={e => handleChange(index, e)}/>
                     { (element.name != 'Total')  ? <>
                         <label for='played'> Played?</label><input type='checkbox'  name="played" checked={element.played} value={element.played}  onChange={e => handleChange(index, e)}/>
                         <label for='winner'> Winner?</label><input type='checkbox' name="winner"
