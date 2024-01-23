@@ -39,11 +39,13 @@ function PointForm({players, closePopUp = f =>f}) {
                 <div className="form-inline" key={index}>
                     <div className='right-child'><label>{element.name} </label></div>
                 <div className='left-child'>
-                    <input type="text" name="point" value={  (element.name == 'Total') ? totalPoint : element.point }  onChange={e => handleChange(index, e)}/>
+                    <input type="number" name="point" required value={  (element.name == 'Total') ? totalPoint : element.point }  onChange={e => handleChange(index, e)}/>
                     { (element.name != 'Total')  ? <>
-                    Played? <input type='checkbox'  name="played" checked={element.played} value={element.played}  onChange={e => handleChange(index, e)}/>
-                    Winner? <input type='checkbox'  name="winner" checked={element.winner} value={element.winner}   onChange={e => handleChange(index, e)}/>
-                    Maal Seen? <input type='checkbox' name="maalseen" checked={element.maalseen} value={element.maalseen}  onChange={e => handleChange(index, e)}/>
+                        <label for='played'> Played?</label><input type='checkbox'  name="played" checked={element.played} value={element.played}  onChange={e => handleChange(index, e)}/>
+                        <label for='winner'> Winner?</label><input type='checkbox' name="winner"
+                                                                   checked={element.winner} value={element.winner}
+                                                                   onChange={e => handleChange(index, e)}/>
+                        <label for='maalseen'> Maal Seen?</label> <input type='checkbox' name="maalseen" checked={element.maalseen} value={element.maalseen}  onChange={e => handleChange(index, e)}/>
                     </>  : '' }
                     </div>
                 </div>

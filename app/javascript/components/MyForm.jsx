@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import '../../assets/stylesheets/MyForm.css'
-function MyForm({players}) {
+function MyForm({players, closePopUp = f =>f}) {
     const [formValues, setFormValues] = useState(players.filter(item => item.Header !== 'Total').map(item=> ({ name: item.Header})))
     let handleChange = (i, e) => {
         let newFormValues = [...formValues];
@@ -22,6 +22,7 @@ function MyForm({players}) {
         event.preventDefault();
         if (formValues.length > 1){
             saveJSON('players', JSON.stringify(formValues))
+            closePopUp(true);
         }else{
             alert('Please add at least two player?')
         }
@@ -37,9 +38,9 @@ function MyForm({players}) {
             {formValues.map((element, index) => (
                 <div className="form-inline" key={index}>
                     <label>Name</label>
-                    <input type="text" name="name" value={element.name || ""} onChange={e => handleChange(index, e)}/>
+                    <input type="text" name="name" value={element.name || ""} required onChange={e => handleChange(index, e)}/>
                     {
-                        players.length < 1  ?
+                        players.length < 1 || element.name == '' ?
                             <button type="button" className="button remove"
                                     onClick={() => removeFormFields(index)}>Remove</button>
                             : null

@@ -8,7 +8,7 @@ import MyForm from "~/components/MyForm";
 import Table from "~/components/Table";
 import axios from "axios";
 import PointForm from "~/components/PointForm";
-import {loadJSON, arrFilter, arrOrderFilter, winner} from "~/util/loadStorage";
+import {loadJSON, arrOrderFilter, winner, removeJSON} from "~/util/loadStorage";
 
 
 const Home = () => {
@@ -102,27 +102,37 @@ const Home = () => {
 
     const closePopup = () => {
         setPointPopup(false);
+        setButtonPopup(false);
     }
 
-    const clearAllData = () => {
-       return ''
+    const clearAllData = (message) => {
+        const confirm = () => {
+            if(window.confirm(message)){
+                removeJSON('players')
+                removeJSON('players_points')
+            }
+        }
+        return confirm
     }
 
 
   return (
   <section>
-    <Link to="/summary">Go to the Summary page</Link>
-    <br />
-    <Link to="/report">Go to the Report page</Link>
+    {/*<Link to="/summary">Go to the Summary page</Link>*/}
+    {/*<br />*/}
+    {/*<Link to="/report">Go to the Report page</Link>*/}
     <Container className="p-3">
         <Container className="p-5 mb-4 bg-light rounded-3">
-            <h1 className="header">Welcome To Game show</h1>
+            <h1 className="header">Marriage(card game) calculator.</h1>
+            <p> For details about the game <a href="https://en.wikipedia.org/wiki/Marriage_(card_game)" target="_blank">
+               click here
+            </a> </p>
             <button onClick={() => setButtonPopup(true)}> Add Players</button>
             <button onClick={() => setPointPopup(true)}> Add Points</button>
-            <button onClick={() => clearAllData()}> Clear all data</button>
+            <button onClick={clearAllData('Sure?')}> Clear all data</button>
             <Mpopup trigger={buttonPopup} setTrigger={setButtonPopup}>
                 <h3> Add Players</h3>
-                <MyForm players={columns[0].columns}/>
+                <MyForm players={columns[0].columns} closePopUp={closePopup}/>
             </Mpopup>
             <Mpopup trigger={pointPopup} setTrigger={setPointPopup}>
                 <h3> Add Points</h3>
