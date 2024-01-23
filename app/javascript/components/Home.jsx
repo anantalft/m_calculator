@@ -117,32 +117,41 @@ const Home = () => {
 
 
   return (
-  <section>
-    {/*<Link to="/summary">Go to the Summary page</Link>*/}
-    {/*<br />*/}
-    {/*<Link to="/report">Go to the Report page</Link>*/}
-    <Container className="p-3">
-        <Container className="p-5 mb-4 bg-light rounded-3">
-            <h1 className="header">Marriage(card game) calculator.</h1>
-            <p> For details about the game <a href="https://en.wikipedia.org/wiki/Marriage_(card_game)" target="_blank">
-               click here
-            </a> </p>
-            <button onClick={() => setButtonPopup(true)}> Add Players</button>
-            <button onClick={() => setPointPopup(true)}> Add Points</button>
-            <button onClick={clearAllData('Sure?')}> Clear all data</button>
-            <Mpopup trigger={buttonPopup} setTrigger={setButtonPopup}>
-                <h3> Add Players</h3>
-                <MyForm players={columns[0].columns} closePopUp={closePopup}/>
-            </Mpopup>
-            <Mpopup trigger={pointPopup} setTrigger={setPointPopup}>
-                <h3> Add Points</h3>
-                <PointForm players={columns[0].columns} closePopUp={closePopup}/>
-            </Mpopup>
-            <br/><br/>
-            <Table columns={columns} data={data}/>
-        </Container>
-    </Container>
-  </section>
+      <section>
+          {/*<Link to="/summary">Go to the Summary page</Link>*/}
+          {/*<br />*/}
+          {/*<Link to="/report">Go to the Report page</Link>*/}
+          <Container className="p-3">
+              <Container className="p-5 mb-4 bg-light rounded-3">
+                  <h1 className="header">Marriage(card game) calculator.</h1>
+                  <p> For details about the game <a href="https://en.wikipedia.org/wiki/Marriage_(card_game)"
+                                                    target="_blank">
+                      click here
+                  </a></p>
+                  <button onClick={() => setButtonPopup(true)}> Add Players</button>
+                  <button onClick={() => setPointPopup(true)}> Add Points</button>
+                  <button onClick={clearAllData('Sure?')}> Clear all data</button>
+                  <Mpopup trigger={buttonPopup} setTrigger={setButtonPopup}>
+                      <h3> Add Players</h3>
+                      <MyForm players={columns[0].columns} closePopUp={closePopup}/>
+                  </Mpopup>
+                  <Mpopup trigger={pointPopup} setTrigger={setPointPopup}>
+                      <h3> Add Points</h3>
+                      <PointForm players={columns[0].columns} closePopUp={closePopup}/>
+                  </Mpopup>
+                  <br/><br/>
+                  <Table columns={columns} data={data}/>
+
+              </Container>
+          </Container>
+          <footer>
+              <div className='footer'>
+                  <p>Author: Ananta Lamichhane &copy; Copyright 2024 <br/><a
+                      href="mailto:anantalamichhane1@gmail.com">anantalamichhane1@gmail.com</a></p>
+              </div>
+          </footer>
+
+      </section>
   )
 }
 

@@ -31,3 +31,17 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     background-color: #ffffe0;
     font-weight: bold;
 }
+
+footer{
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+}
+
+.footer {
+    height: 100px;
+    margin: auto;
+    width: 400px;
+    text-align:center;
+    padding:10px;
+}
