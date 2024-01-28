@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import '../../assets/stylesheets/MyForm.css'
 function MyForm({players, closePopUp = f =>f}) {
-    const [formValues, setFormValues] = useState(players.filter(item => item.Header !== 'Total').map(item=> ({ name: item.Header})))
+    const [formValues, setFormValues] = useState(players.filter(item => item.Header !== 'Total' && item.Header !== 'Actions').map(item=> ({ name: item.Header})))
     let handleChange = (i, e) => {
         let newFormValues = [...formValues];
         newFormValues[i][e.target.name] = e.target.value;

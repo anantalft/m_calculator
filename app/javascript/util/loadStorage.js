@@ -10,7 +10,7 @@ export const saveJSON = (key, data) =>
 export const arrFilter = (list) => list.filter(item => item.name !== 'Total');
 
 export const arrOrderFilter = (list) => {
-     const itemList = list.filter(item => item.name !== 'Total');
+     const itemList = list.filter(item => (item.name !== 'Total' && item.name !=='Actions' && item.name !== 'total'));
      return itemList
 }
 
