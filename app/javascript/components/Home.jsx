@@ -15,8 +15,10 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 const Home = () => {
   const [buttonPopup, setButtonPopup] = useState(false);
   const [pointPopup, setPointPopup] = useState(false);
+  const [playerList, setPlayerList] = useState(JSON.parse(loadJSON('players')))
   const [points, setPoints] = useState(JSON.parse(loadJSON('players_points')))
-  const [editPoints, setEditPoints] =   useState([])
+  const [editPoints, setEditPoints] =   useState({})
+
   // const points = JSON.parse(loadJSON('players_points'));
     const p_points = (player, number_of_players, t_points) => {
         if (player.played && player.maalseen && !player.winner){
@@ -34,15 +36,17 @@ const Home = () => {
 
     const editPoint = (e,rowId) => {
         e.preventDefault();
-        // setEditPoints({ rowId:  JSON.parse(loadJSON('players_points'))[rowId] });
-        setEditPoints( JSON.parse(loadJSON('players_points'))[rowId] );
+        setEditPoints( { [rowId] : JSON.parse(loadJSON('players_points'))[rowId] });
         setPointPopup(true);
     }
 
 
 
     const colPlayers= () => {
-        const names = JSON.parse(loadJSON('players'))
+        // const names = playerList
+        const names = JSON.parse(loadJSON('players'));
+        // console.log('name:');
+        // console.log(names);
         if(!names) return [];
         const p_names = names.map(item => (
             {
@@ -67,7 +71,7 @@ const Home = () => {
     }
 
 
-    const columns = useMemo(() => {
+    const columns = () => useMemo(() => {
         return [
             {
                 Header: "Players list",
@@ -75,6 +79,7 @@ const Home = () => {
             },
         ];
     }, []);
+
 
     const calculated_points = () =>  {
         if (!points) return []
@@ -107,7 +112,7 @@ const Home = () => {
         });
 
         // Calculate the sum for each column
-        const columnSums = columns[0].columns.map(column => {
+        const columnSums = columns()[0].columns.map(column => {
             if (column.accessor) {
                 return convertedPoints.reduce((acc, row) => acc + (parseInt(row[column.accessor]) || 0 ), 0);
             }
@@ -115,17 +120,16 @@ const Home = () => {
         });
 
        // Add the total  row to the data. it add total at the end of the table.
-        return  [...convertedPoints, {...Object.fromEntries(columns[0].columns.map((col, index) => [col.accessor, columnSums[index]]))}];
+        return  [...convertedPoints, {...Object.fromEntries(columns()[0].columns.map((col, index) => [col.accessor, columnSums[index]]))}];
 
     }
-
-    // const [data, setData] = useState(calculated_points);
 
 
     useEffect(() => {
         setPoints(JSON.parse(loadJSON('players_points')))
-        // setData(calculated_points)
     },[points]);
+
+
 
     const closePopup = () => {
         setPointPopup(false);
@@ -138,9 +142,18 @@ const Home = () => {
             if(window.confirm(message)){
                 removeJSON('players')
                 removeJSON('players_points')
+                setPlayerList('')
+                setPoints('')
             }
         }
         return confirm
+    }
+
+    const updatePlayers = () => {
+        setPlayerList(JSON.parse(loadJSON('players')));
+        // console.log('players:')
+        // console.log(JSON.parse(loadJSON('players')));
+        // setColumn1s(columns);
     }
 
 
@@ -161,14 +174,14 @@ const Home = () => {
                   <button onClick={clearAllData('Sure?')}> Clear all data</button>
                   <Mpopup trigger={buttonPopup} setTrigger={setButtonPopup}>
                       <h3> Add Players</h3>
-                      <MyForm players={columns[0].columns} closePopUp={closePopup}/>
+                      <MyForm players={columns()[0].columns} closePopUp={closePopup} updatePlayers={updatePlayers}/>
                   </Mpopup>
                   <Mpopup trigger={pointPopup} setTrigger={setPointPopup}>
                       <h3> Add Points</h3>
-                      <PointForm players={columns[0].columns} editPoints={editPoints} closePopUp={closePopup}/>
+                      <PointForm players={columns()[0].columns} editPoints={editPoints} closePopUp={closePopup}/>
                   </Mpopup>
                   <br/><br/>
-                  <Table columns={columns} data={calculated_points()}/>
+                  <Table columns={columns()} data={calculated_points()}/>
 
               </Container>
           </Container>

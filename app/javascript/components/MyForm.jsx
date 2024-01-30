@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import '../../assets/stylesheets/MyForm.css'
-function MyForm({players, closePopUp = f =>f}) {
+function MyForm({players, closePopUp = f =>f, updatePlayers= f=> f}) {
     const [formValues, setFormValues] = useState(players.filter(item => item.Header !== 'Total' && item.Header !== 'Actions').map(item=> ({ name: item.Header})))
     let handleChange = (i, e) => {
         let newFormValues = [...formValues];
@@ -23,6 +23,7 @@ function MyForm({players, closePopUp = f =>f}) {
         if (formValues.length > 1){
             saveJSON('players', JSON.stringify(formValues))
             closePopUp(true);
+            updatePlayers();
         }else{
             alert('Please add at least two player?')
         }
