@@ -18,6 +18,7 @@ const Home = () => {
   const [playerList, setPlayerList] = useState(JSON.parse(loadJSON('players')))
   const [points, setPoints] = useState(JSON.parse(loadJSON('players_points')))
   const [editPoints, setEditPoints] =   useState({})
+    const [columnst, setColumnst] = useState(columns(playerList))
 
   // const points = JSON.parse(loadJSON('players_points'));
     const p_points = (player, number_of_players, t_points) => {
@@ -42,13 +43,9 @@ const Home = () => {
 
 
 
-    const colPlayers= () => {
-        // const names = playerList
-        const names = JSON.parse(loadJSON('players'));
-        // console.log('name:');
-        // console.log(names);
-        if(!names) return [];
-        const p_names = names.map(item => (
+    function colPlayers(playerList) {
+        if(!playerList) return [];
+        const p_names = playerList.map(item => (
             {
                 Header: item.name,
                 accessor: `${item.name}`,
@@ -71,14 +68,14 @@ const Home = () => {
     }
 
 
-    const columns = () => useMemo(() => {
-        return [
-            {
-                Header: "Players list",
-                columns: colPlayers(),
-            },
-        ];
-    }, []);
+    function columns(playerList) {
+                    return [
+                {
+                    Header: "Players list",
+                    columns: colPlayers(playerList),
+                },
+            ];
+    }
 
 
     const calculated_points = () =>  {
@@ -90,7 +87,7 @@ const Home = () => {
                 const t_points = playerWithoutTotal.reduce((total_points, item) => { return total_points =  item.played && item.maalseen ? total_points + parseInt(item.point) : total_points }, 0)
                 const winnerName = playerWithoutTotal.filter(item => item.winner == true)
                 playerObj['uid'] = parseInt(key);
-                playerObj['winner'] = winnerName[0].name || '';
+                // playerObj['winner'] = winnerName[0].name || '';
                 playerObj[`${player.name}`] = p_points(player,parseInt(number_of_players),parseInt(t_points)) || 0;
                 playerObj['total'] = t_points || 0;
                 return playerObj;
@@ -130,7 +127,6 @@ const Home = () => {
     },[points]);
 
 
-
     const closePopup = () => {
         setPointPopup(false);
         setButtonPopup(false);
@@ -149,13 +145,14 @@ const Home = () => {
         return confirm
     }
 
-    const updatePlayers = () => {
-        setPlayerList(JSON.parse(loadJSON('players')));
-        // console.log('players:')
-        // console.log(JSON.parse(loadJSON('players')));
-        // setColumn1s(columns);
-    }
+    const updatePlayers = (t) => {
+        setPlayerList((prevPlayerList) => {
+            const updatedPlayerList = JSON.parse(loadJSON('players'));
+            setColumnst(columns(updatedPlayerList));
+            return updatedPlayerList;
+        });
 
+    }
 
   return (
       <section>
@@ -174,14 +171,14 @@ const Home = () => {
                   <button onClick={clearAllData('Sure?')}> Clear all data</button>
                   <Mpopup trigger={buttonPopup} setTrigger={setButtonPopup}>
                       <h3> Add Players</h3>
-                      <MyForm players={columns()[0].columns} closePopUp={closePopup} updatePlayers={updatePlayers}/>
+                      <MyForm players={playerList && columnst[0].columns || []} closePopUp={closePopup} updatePlayers={updatePlayers}/>
                   </Mpopup>
                   <Mpopup trigger={pointPopup} setTrigger={setPointPopup}>
                       <h3> Add Points</h3>
-                      <PointForm players={columns()[0].columns} editPoints={editPoints} closePopUp={closePopup}/>
+                      <PointForm players={playerList && columnst[0].columns || []}  editPoints={editPoints} closePopUp={closePopup}/>
                   </Mpopup>
                   <br/><br/>
-                  <Table columns={columns()} data={calculated_points()}/>
+                  { (columnst)  && <Table columns={columnst} data={calculated_points()} /> }
 
               </Container>
           </Container>

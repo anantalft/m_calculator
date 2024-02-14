@@ -23,7 +23,7 @@ function MyForm({players, closePopUp = f =>f, updatePlayers= f=> f}) {
         if (formValues.length > 1){
             saveJSON('players', JSON.stringify(formValues))
             closePopUp(true);
-            updatePlayers();
+            updatePlayers(true);
         }else{
             alert('Please add at least two player?')
         }
