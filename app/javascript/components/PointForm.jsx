@@ -26,7 +26,7 @@ function PointForm({players, editPoints, closePopUp = f =>f, updateCalculatedPoi
         event.preventDefault();
         const key = points ?  parseInt(Object.keys(points).pop()) + 1 : 0
         let new_player_points = {}
-        if (objKey(editPoints) > 0 ){
+        if (objKey(editPoints).length > 0 ){
              points[objKey(editPoints)] = [...formValues]
             new_player_points = points
         }else{
