@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import '../../assets/stylesheets/MyForm.css'
 import {loadJSON, saveJSON} from "~/util/loadStorage";
 import MyForm from "~/components/MyForm";
-function PointForm({players, editPoints, closePopUp = f =>f}) {
+function PointForm({players, editPoints, closePopUp = f =>f, updateCalculatedPoints=f=>f, points}) {
 
     // const [itemValues, setItemValues] = useState(Object.values(editPoints)[0] || [])
     // const [itemKey, setItemkey] = useState(Object.keys(editPoints)[0] || [])
@@ -21,22 +21,22 @@ function PointForm({players, editPoints, closePopUp = f =>f}) {
         return { name: piItem.Header, point: parseInt(eItem.point) || 0, played: eItem.played || false, winner: eItem.winner || false, maalseen: eItem.maalseen || false}
     }
     const [formValues, setFormValues] = useState(players.filter(item => item.Header !== 'Actions').map(item=> (pointItem(item))))
-    const [totalPoint, setTotalPoint] = useState(0)
+    const [totalPoint, setTotalPoint] = useState(totalPointsCalculator(formValues) || 0)
     let handleSubmit = (event) => {
         event.preventDefault();
-        const player_points = JSON.parse(loadJSON('players_points'))
-        const key = player_points ?  parseInt(Object.keys(player_points).pop()) + 1 : 0
+        const key = points ?  parseInt(Object.keys(points).pop()) + 1 : 0
         let new_player_points = {}
         if (objKey(editPoints) > 0 ){
-             player_points[objKey(editPoints)] = [...formValues]
-            new_player_points = player_points
+             points[objKey(editPoints)] = [...formValues]
+            new_player_points = points
         }else{
-             new_player_points = {...player_points, [key]: [...formValues] }
+             new_player_points = {...points, [key]: [...formValues] }
         }
 
         const winners = formValues.filter(obj => obj.winner === true);
         if (winners.length == 1){
             saveJSON('players_points', JSON.stringify(new_player_points))
+            updateCalculatedPoints(true);
             closePopUp(true);
         }else{
             alert('Please select one winner?')
@@ -51,10 +51,13 @@ function PointForm({players, editPoints, closePopUp = f =>f}) {
                 newFormValues[i]['maalseen'] =  !(e.target.value ==='true');
             }
         }
+        setTotalPoint(totalPointsCalculator(newFormValues) )
         setFormValues(newFormValues);
-        setTotalPoint(newFormValues.reduce((acc, element) => acc + (element.played && element.maalseen ?  parseInt(element.point) : 0)  ,0) )
     }
 
+    function totalPointsCalculator(formValues){
+        return formValues.reduce((acc, element) => acc + (element.played && element.maalseen ?  parseInt(element.point) : 0)  ,0)
+    }
 
     return (
         <form onSubmit={handleSubmit}>

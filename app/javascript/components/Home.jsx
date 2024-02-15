@@ -18,10 +18,13 @@ const Home = () => {
   const [playerList, setPlayerList] = useState(JSON.parse(loadJSON('players')))
   const [points, setPoints] = useState(JSON.parse(loadJSON('players_points')))
   const [editPoints, setEditPoints] =   useState({})
+
     const [columnst, setColumnst] = useState(columns(playerList))
+    const [calculatedPoints, setCalculatedPoints] = useState(calculated_points_c(points))
+
 
   // const points = JSON.parse(loadJSON('players_points'));
-    const p_points = (player, number_of_players, t_points) => {
+    function p_points(player, number_of_players, t_points) {
         if (player.played && player.maalseen && !player.winner){
             return (parseInt(player.point) * number_of_players) - (t_points + 3)
         }
@@ -78,7 +81,7 @@ const Home = () => {
     }
 
 
-    const calculated_points = () =>  {
+    function calculated_points_c(points) {
         if (!points) return []
         const convertedPoints = Object.keys(points).map(key => {
             const playerWithoutTotal = arrOrderFilter(points[key])
@@ -87,7 +90,7 @@ const Home = () => {
                 const t_points = playerWithoutTotal.reduce((total_points, item) => { return total_points =  item.played && item.maalseen ? total_points + parseInt(item.point) : total_points }, 0)
                 const winnerName = playerWithoutTotal.filter(item => item.winner == true)
                 playerObj['uid'] = parseInt(key);
-                // playerObj['winner'] = winnerName[0].name || '';
+                playerObj['winner'] = winnerName[0].name || '';
                 playerObj[`${player.name}`] = p_points(player,parseInt(number_of_players),parseInt(t_points)) || 0;
                 playerObj['total'] = t_points || 0;
                 return playerObj;
@@ -109,23 +112,16 @@ const Home = () => {
         });
 
         // Calculate the sum for each column
-        const columnSums = columns()[0].columns.map(column => {
+        const columnSums = columns(playerList)[0].columns.map(column => {
             if (column.accessor) {
                 return convertedPoints.reduce((acc, row) => acc + (parseInt(row[column.accessor]) || 0 ), 0);
             }
             return null;
         });
-
        // Add the total  row to the data. it add total at the end of the table.
-        return  [...convertedPoints, {...Object.fromEntries(columns()[0].columns.map((col, index) => [col.accessor, columnSums[index]]))}];
+        return  [...convertedPoints, {...Object.fromEntries(columns(playerList)[0].columns.map((col, index) => [col.accessor, columnSums[index]]))}];
 
     }
-
-
-    useEffect(() => {
-        setPoints(JSON.parse(loadJSON('players_points')))
-    },[points]);
-
 
     const closePopup = () => {
         setPointPopup(false);
@@ -138,8 +134,8 @@ const Home = () => {
             if(window.confirm(message)){
                 removeJSON('players')
                 removeJSON('players_points')
-                setPlayerList('')
-                setPoints('')
+                updatePlayers();
+                updateCalculatedPoints();
             }
         }
         return confirm
@@ -152,6 +148,14 @@ const Home = () => {
             return updatedPlayerList;
         });
 
+    }
+
+    const updateCalculatedPoints= () => {
+      setPoints((previousPoints) => {
+          const updatedPoints = JSON.parse(loadJSON('players_points'));
+          setCalculatedPoints(calculated_points_c(updatedPoints))
+          return updatedPoints
+      })
     }
 
   return (
@@ -175,10 +179,10 @@ const Home = () => {
                   </Mpopup>
                   <Mpopup trigger={pointPopup} setTrigger={setPointPopup}>
                       <h3> Add Points</h3>
-                      <PointForm players={playerList && columnst[0].columns || []}  editPoints={editPoints} closePopUp={closePopup}/>
+                      <PointForm players={playerList && columnst[0].columns || []}  editPoints={editPoints} closePopUp={closePopup} updateCalculatedPoints={updateCalculatedPoints} points={points}/>
                   </Mpopup>
                   <br/><br/>
-                  { (columnst)  && <Table columns={columnst} data={calculated_points()} /> }
+                  { (columnst)  && <Table columns={columnst} data={calculatedPoints} /> }
 
               </Container>
           </Container>
