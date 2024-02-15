@@ -67,11 +67,11 @@ function PointForm({players, editPoints, closePopUp = f =>f, updateCalculatedPoi
                 <div className='left-child'>
                     <input className='input-txt' type="number" name="point" required value={  (element.name == 'Total') ? totalPoint : element.point }  onChange={e => handleChange(index, e)}/>
                     { (element.name != 'Total')  ? <>
-                        <label> Played?</label><input type='checkbox'  name="played" checked={element.played} value={element.played}  onChange={e => handleChange(index, e)}/>
-                        <label> Winner?</label><input type='checkbox' name="winner"
+                        <label> Played</label><input type='checkbox'  name="played" checked={element.played} value={element.played}  onChange={e => handleChange(index, e)}/>
+                        <label> Winner</label><input type='checkbox' name="winner"
                                                                    checked={element.winner} value={element.winner}
                                                                    onChange={e => handleChange(index, e)}/>
-                        <label> Maal Seen?</label> <input type='checkbox' name="maalseen" checked={element.maalseen} value={element.maalseen}  onChange={e => handleChange(index, e)}/>
+                        <label> Maal Seen</label> <input type='checkbox' name="maalseen" checked={element.maalseen} value={element.maalseen}  onChange={e => handleChange(index, e)}/>
                     </>  : '' }
                     </div>
                 </div>
