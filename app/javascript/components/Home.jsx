@@ -25,6 +25,9 @@ const Home = () => {
 
   // const points = JSON.parse(loadJSON('players_points'));
     function p_points(player, number_of_players, t_points) {
+        if (player.played && player.maalseen && !player.winner && player.dublee){
+            return (parseInt(player.point) * number_of_players) - t_points
+        }
         if (player.played && player.maalseen && !player.winner){
             return (parseInt(player.point) * number_of_players) - (t_points + 3)
         }
@@ -63,7 +66,6 @@ const Home = () => {
                     <button onClick={(e) => { editPoint(e, value);} } >
                         Edit
                     </button>
-                    <FaTrash color="red"/>
                     </>
                 ),
             }]

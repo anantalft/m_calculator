@@ -15,10 +15,10 @@ function PointForm({players, editPoints, closePopUp = f =>f, updateCalculatedPoi
     }
     let pointItem = (piItem) => {
          const objValue = objValues(editPoints)
-        if (!objValue.length) return { name: piItem.Header, point: 0, played: true, winner: false, maalseen: false}
+        if (!objValue.length) return { name: piItem.Header, point: 0, played: true, winner: false, maalseen: false, dublee: false}
         const eItem = objValue.filter(item => item.name == piItem.Header)[0]
-        if (!eItem) return { name: piItem.Header, point: 0, played: false, winner: false, maalseen: false}
-        return { name: piItem.Header, point: parseInt(eItem.point) || 0, played: eItem.played || false, winner: eItem.winner || false, maalseen: eItem.maalseen || false}
+        if (!eItem) return { name: piItem.Header, point: 0, played: false, winner: false, maalseen: false, dublee: false}
+        return { name: piItem.Header, point: parseInt(eItem.point) || 0, played: eItem.played || false, winner: eItem.winner || false, maalseen: eItem.maalseen || false, dublee: eItem.dublee || false}
     }
     const [formValues, setFormValues] = useState(players.filter(item => item.Header !== 'Actions').map(item=> (pointItem(item))))
     const [totalPoint, setTotalPoint] = useState(totalPointsCalculator(formValues) || 0)
@@ -67,13 +67,19 @@ function PointForm({players, editPoints, closePopUp = f =>f, updateCalculatedPoi
                 <div className='left-child'>
                     <input className='input-txt' type="number" name="point" required value={  (element.name == 'Total') ? totalPoint : element.point }  onChange={e => handleChange(index, e)}/>
                     { (element.name != 'Total')  ? <>
-                        <label> Played</label><input type='checkbox'  name="played" checked={element.played} value={element.played}  onChange={e => handleChange(index, e)}/>
+                        <label> Played</label><input type='checkbox' name="played" checked={element.played}
+                                                     value={element.played} onChange={e => handleChange(index, e)}/>
                         <label> Winner</label><input type='checkbox' name="winner"
-                                                                   checked={element.winner} value={element.winner}
-                                                                   onChange={e => handleChange(index, e)}/>
-                        <label> Maal Seen</label> <input type='checkbox' name="maalseen" checked={element.maalseen} value={element.maalseen}  onChange={e => handleChange(index, e)}/>
-                    </>  : '' }
-                    </div>
+                                                     checked={element.winner} value={element.winner}
+                                                     onChange={e => handleChange(index, e)}/>
+                        <label> Maal Seen</label> <input type='checkbox' name="maalseen" checked={element.maalseen}
+                                                         value={element.maalseen}
+                                                         onChange={e => handleChange(index, e)}/>
+                        <label> Dublee</label> <input type='checkbox' name="dublee" checked={element.dublee}
+                                                         value={element.dublee}
+                                                         onChange={e => handleChange(index, e)}/>
+                    </> : ''}
+                </div>
                 </div>
             ))}
             <div className="button-section">
